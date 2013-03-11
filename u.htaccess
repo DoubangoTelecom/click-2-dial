@@ -1,0 +1,16 @@
+AddHandler x-mapp-php5 .php3 .php4 .php .phtml
+<IfModule mod_rewrite.c>
+Options -MultiViews
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteRule ^assets/(.*)$ assets/$1 [L]
+RewriteRule ^images/(.*)$ images/$1 [L]
+RewriteRule ^sounds/(.*)$ sounds/$1 [L]
+RewriteRule (.*\.js)$ /$1 [L]
+RewriteRule (.*\.html$) /index.html [L]
+RewriteRule (.*\.htm$) /$1 [L]
+RewriteRule ^ index.html [L]
+
+</IfModule>

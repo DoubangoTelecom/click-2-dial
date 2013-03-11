@@ -1,0 +1,756 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>click-to-call &middot; receive calls on your SIP softphone, mobile or fixed line from your website visitors</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Doubango Telecom">
+
+    <!-- Le styles -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <style>
+
+    /* GLOBAL STYLES
+    -------------------------------------------------- */
+    /* Padding below the footer and lighter body text */
+
+    body {
+      padding-bottom: 40px;
+      color: #5a5a5a;
+    }
+
+
+
+    /* CUSTOMIZE THE NAVBAR
+    -------------------------------------------------- */
+
+    /* Special class on .container surrounding .navbar, used for positioning it into place. */
+    .navbar-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      margin-top: 20px;
+      margin-bottom: -90px; /* Negative margin to pull up carousel. 90px is roughly margins and height of navbar. */
+    }
+    .navbar-wrapper .navbar {
+
+    }
+
+    /* Remove border and change up box shadow for more contrast */
+    .navbar .navbar-inner {
+      border: 0;
+      -webkit-box-shadow: 0 2px 10px rgba(0,0,0,.25);
+         -moz-box-shadow: 0 2px 10px rgba(0,0,0,.25);
+              box-shadow: 0 2px 10px rgba(0,0,0,.25);
+    }
+
+    /* Downsize the brand/project name a bit */
+    .navbar .brand {
+      padding: 14px 20px 16px; /* Increase vertical padding to match navbar links */
+      font-size: 16px;
+      font-weight: bold;
+      text-shadow: 0 -1px 0 rgba(0,0,0,.5);
+    }
+
+    /* Navbar links: increase padding for taller navbar */
+    .navbar .nav > li > a {
+      padding: 15px 20px;
+    }
+
+    /* Offset the responsive button for proper vertical alignment */
+    .navbar .btn-navbar {
+      margin-top: 10px;
+    }
+
+
+
+    /* CUSTOMIZE THE CAROUSEL
+    -------------------------------------------------- */
+
+    /* Carousel base class */
+    .carousel {
+      margin-bottom: 60px;
+    }
+
+    .carousel .container {
+      position: relative;
+      z-index: 9;
+    }
+
+    .carousel-control {
+      height: 80px;
+      margin-top: 0;
+      font-size: 120px;
+      text-shadow: 0 1px 1px rgba(0,0,0,.4);
+      background-color: transparent;
+      border: 0;
+      z-index: 10;
+    }
+
+    .carousel .item {
+      height: 500px;
+    }
+    .carousel img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      height: 500px;
+    }
+
+    .carousel-caption {
+      background-color: transparent;
+      position: static;
+      max-width: 550px;
+      padding: 0 20px;
+      margin-top: 200px;
+    }
+    .carousel-caption h1,
+    .carousel-caption .lead {
+      margin: 0;
+      line-height: 1.25;
+      color: #fff;
+      text-shadow: 0 1px 1px rgba(0,0,0,.4);
+    }
+    .carousel-caption .btn {
+      margin-top: 10px;
+    }
+
+
+
+    /* MARKETING CONTENT
+    -------------------------------------------------- */
+
+    /* Center align the text within the three columns below the carousel */
+    .marketing .span4 {
+      text-align: center;
+    }
+    .marketing h2 {
+      font-weight: normal;
+    }
+    .marketing .span4 p {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+
+
+    /* Featurettes
+    ------------------------- */
+
+    .featurette-divider {
+      margin: 80px 0; /* Space out the Bootstrap <hr> more */
+    }
+    .featurette {
+      padding-top: 120px; /* Vertically center images part 1: add padding above and below text. */
+      overflow: hidden; /* Vertically center images part 2: clear their floats. */
+    }
+    .featurette-image {
+      margin-top: -120px; /* Vertically center images part 3: negative margin up the image the same amount of the padding to center it. */
+    }
+
+    /* Give some space on the sides of the floated elements so text doesn't run right into it. */
+    .featurette-image.pull-left {
+      margin-right: 40px;
+    }
+    .featurette-image.pull-right {
+      margin-left: 40px;
+    }
+
+    /* Thin out the marketing headings */
+    .featurette-heading {
+      font-size: 50px;
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -1px;
+    }
+
+
+
+    /* RESPONSIVE CSS
+    -------------------------------------------------- */
+
+    @media (max-width: 979px) {
+
+      .container.navbar-wrapper {
+        margin-bottom: 0;
+        width: auto;
+      }
+      .navbar-inner {
+        border-radius: 0;
+        margin: -20px 0;
+      }
+
+      .carousel .item {
+        height: 500px;
+      }
+      .carousel img {
+        width: auto;
+        height: 500px;
+      }
+
+      .featurette {
+        height: auto;
+        padding: 0;
+      }
+      .featurette-image.pull-left,
+      .featurette-image.pull-right {
+        display: block;
+        float: none;
+        max-width: 40%;
+        margin: 0 auto 20px;
+      }
+    }
+
+
+    @media (max-width: 767px) {
+
+      .navbar-inner {
+        margin: -20px;
+      }
+
+      .carousel {
+        margin-left: -20px;
+        margin-right: -20px;
+      }
+      .carousel .container {
+
+      }
+      .carousel .item {
+        height: 300px;
+      }
+      .carousel img {
+        height: 300px;
+      }
+      .carousel-caption {
+        width: 65%;
+        padding: 0 70px;
+        margin-top: 100px;
+      }
+      .carousel-caption h1 {
+        font-size: 30px;
+      }
+      .carousel-caption .lead,
+      .carousel-caption .btn {
+        font-size: 18px;
+      }
+
+      .marketing .span4 + .span4 {
+        margin-top: 40px;
+      }
+
+      .featurette-heading {
+        font-size: 30px;
+      }
+      .featurette .lead {
+        font-size: 18px;
+        line-height: 1.5;
+      }
+
+    }
+    
+    .glass-panel
+    {
+        z-index: 99;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        top: 0;
+        left: 0;
+        opacity: 0.8;
+        background-color: Gray;
+    }
+    
+    .div-sign-in-up {
+        z-index: 100;
+        position: fixed;
+        -moz-transition-property: left top;
+        -o-transition-property: left top;
+        -webkit-transition-duration: 2s;
+        -moz-transition-duration: 2s;
+        -o-transition-duration: 2s;
+    }
+    </style>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="./assets/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="assets/ico/favicon.png">
+
+
+    <script type="text/javascript">
+        var bSignUpVisible, bSignInVisible, bSignedIn;
+
+        C = 
+        {
+            divSignUpWidth: 220,
+            divSignInWidth: 220
+        };
+
+        function is_email(a){
+            return /^([\w!.%+\-])+@([\w\-])+(?:\.[\w\-]+)+$/.test(a);
+        }
+
+        function onpen_signup(){
+            lbSignUp.innerHTML = '';
+            if(window.localStorage){
+                txtSignUpEmail.value = window.localStorage.getItem('org.doubango.click2dial.signup.email');
+                txtSignUpName.value = window.localStorage.getItem('org.doubango.click2dial.signup.name');
+            }
+            divSignUp.style.visibility = 'visible';
+            divSignUp.style.left = ((document.body.clientWidth - C.divSignUpWidth) >> 1) + 'px';
+            divSignUp.style.top = '70px';
+            divGlassPanel.style.visibility = 'visible';
+        }
+
+        function onpen_signin(){
+            if(is_signedin()){
+                set_signedin(false);
+            }
+            else{
+                lbSignIn.innerHTML = '';
+                if(window.localStorage){
+                    txtSignInEmail.value = (window.localStorage.getItem('org.doubango.click2dial.signin.email') || window.localStorage.getItem('org.doubango.click2dial.signup.email') || "");
+                    txtSignInPassword.value = (window.localStorage.getItem('org.doubango.click2dial.signin.password') || "");
+                }
+                divSignIn.style.visibility = 'visible';
+                divSignIn.style.left = ((document.body.clientWidth - C.divSignUpWidth) >> 1) + 'px';
+                divSignIn.style.top = '70px';
+                divGlassPanel.style.visibility = 'visible';
+           }
+        }
+
+        function close_signup(){
+            divSignUp.style.left = '0px';
+            divSignUp.style.top = '0px';
+            divSignUp.style.visibility = 'hidden';
+            divGlassPanel.style.visibility = 'hidden';
+        }
+
+        function close_signin(){
+            divSignIn.style.left = '0px';
+            divSignIn.style.top = '0px';
+            divSignIn.style.visibility = 'hidden';
+            divGlassPanel.style.visibility = 'hidden';
+        }
+
+        function signup(){
+            if(!is_email(txtSignUpEmail.value)){
+                lbSignUp.innerHTML = '<i><b>['+txtSignUpEmail.value+'] not valid as email<i>';
+                return;
+            }
+            var name;
+            if(!(name = txtSignUpName.value) || (name = name.trim()).length == 0){
+                lbSignUp.innerHTML = '<i><b>['+txtSignUpName.value+'] not valid as name<i>';
+                return;
+            }
+            lbSignUp.innerHTML = '<i>signing up...</i>';
+            if(window.localStorage){
+                window.localStorage.setItem('org.doubango.click2dial.signup.email', txtSignUpEmail.value);
+                window.localStorage.setItem('org.doubango.click2dial.signup.name', name);
+            }
+            
+            c2c.signup(name, txtSignUpEmail.value, 
+                function(e){
+                    lbSignUp.innerHTML = '<i>signed up: activation mail sent</i>';
+                    close_signup();
+                },
+                function(e){
+                    lbSignUp.innerHTML = '<b>failed to sign up: ' + e.statusText + '</b>';
+                }
+            );
+        }
+
+        function signin() {
+            if (is_signedin()) {
+                set_signedin(false);
+                if (window.localStorage) {
+                    window.localStorage.setItem('org.doubango.click2dial.signin.email', null);
+                    window.localStorage.setItem('org.doubango.click2dial.signin.password', null);
+                }
+            }
+            else{
+                if (!is_email(txtSignInEmail.value)) {
+                    lbSignIn.innerHTML = '<i>[<b>' + txtSignInEmail.value + '</b>] not valid as email</i>';
+                    return;
+                }
+
+                lbSignIn.innerHTML = '<i>signing in...</i>';
+                if (window.localStorage) {
+                    window.localStorage.setItem('org.doubango.click2dial.signin.email', txtSignInEmail.value);
+                    window.localStorage.setItem('org.doubango.click2dial.signin.password', txtSignInPassword.value);
+                }
+                c2c.signin(txtSignInEmail.value, txtSignInPassword.value,
+                    function (e) {
+                        if (window.sessionStorage) {
+                            window.sessionStorage.setItem('org.doubango.click2dial.signin.email', txtSignInEmail.value);
+                            window.sessionStorage.setItem('org.doubango.click2dial.signin.password', txtSignInPassword.value);
+                        }
+                        lbSignIn.innerHTML = '<i>signed in: ' + e.statusText + '</i>';
+                        close_signin();
+                        set_signedin(true);
+                    },
+                    function (e) {
+                        lbSignIn.innerHTML = '<b>failed to sign in: ' + e.statusText + '</b>';
+                        set_signedin(false);
+                    }
+                );
+            }
+        }
+
+        function set_signedin(signedin) {
+            if (window.sessionStorage) {
+                window.sessionStorage.setItem('org.doubango.click2dial.signin.signedin', signedin ? 'true' : 'false');
+            }
+
+            aMenuSignIn.innerHTML = '&middot; '+ (signedin ? 'sign out' : 'sign in') + '&raquo; &middot;';
+            aMenuMyAccount.style.visibility = signedin ? 'visible' : 'hidden';
+            
+        }
+
+        function is_signedin(){
+            return window.sessionStorage ? (window.sessionStorage.getItem('org.doubango.click2dial.signin.signedin') === 'true') : false;
+        }
+
+        function onpen_myaccount(){
+            window.location = './account.htm';
+        }
+
+        window.onload = function(){
+            set_signedin(is_signedin());
+
+            // link-address call
+            if(window.location.pathname.indexOf("/u/") == 0 && window.location.pathname.indexOf(".htm") == -1){
+                var from = window.location.pathname.substring(3);
+                tsk_utils_log_info('[C2C] link-address = ' + from);
+                c2c.from = from; // use link-address in the url instead of ours
+                c2c.call(); // make call
+            }
+            // activation
+            else if(window.location.pathname.indexOf("/a/") == 0){
+                try {
+                    var activation = window.location.pathname.substring(3).split("%3B");
+                    tsk_utils_log_info('[C2C] link-activation = ' + activation[0] + '; ' + activation[1]);
+                    if (activation.length == 2) { // when navigating from tha activation page we'll have something like '/a/contact.htm'
+                        divGlassPanel.style.visibility = 'visible';
+                        c2c.activate(activation[1], c2c.unobfuscate(activation[0]),
+                            function (e) {
+                                alert(
+                                    "Activation done!\n" +
+                                    "\t1. Sign In using your email address and password(received via mail)\n" +
+		                            "\t2. Open your account page and tell us what's your SIP address"
+                                );
+                                divGlassPanel.style.visibility = 'hidden';
+                            },
+                            function (e) {
+                                alert('Activation failed: ' + e.statusText);
+                                divGlassPanel.style.visibility = 'hidden';
+                            }
+                        );
+                    }
+                }
+                catch (e) {
+                    alert('Activation failed: ' + e);
+                }
+            }
+        }
+
+    </script>
+
+  </head>
+
+  <body>
+
+
+
+    <!-- NAVBAR
+    ================================================== -->
+    <div class="navbar-wrapper">
+      <!-- Wrap the .navbar in .container to center it within the absolutely positioned parent. -->
+      <div class="container">
+
+        <div class="navbar navbar-inverse">
+          <div class="navbar-inner">
+            <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="./index.html">click2dial</a>
+            <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+            <div class="nav-collapse collapse" style='vertical-align:middle'>
+              <ul class="nav">
+                <li class="active"><a href="./index.html">Home</a></li>
+                <li><a href="ug.htm">User Guide</a></li>
+                <li><a href="contact.htm">Contact</a></li>
+                <!-- Read about Bootstrap dropdowns at http://twitter.github.com/bootstrap/javascript.html#dropdowns -->
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Developers <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="./admin.htm">Administration</a></li>
+                    <li><a target=_blank href="https://code.google.com/p/click-2-dial/issues/list">Issue tracker</a></li>
+                    <li><a target=_blank href="https://groups.google.com/group/doubango">Developer group</a></li>
+                    <li><a target=_blank href="https://code.google.com/p/click-2-dial/source/checkout">Source code</a></li>
+                    <li class="divider"></li>
+                    <li class="nav-header">Documentation</li>
+                    <li><a target=_blank href="http://webrtc2sip.org/technical-guide-1.0.pdf">Server</a></li>
+                    <li><a href="doc.htm">Client</a></li>
+                  </ul>
+                </li>
+                <li><a href="#" onclick="onpen_signup();">&middot; sign up&raquo; &middot;</a></li>
+                <li><a id="aMenuSignIn" href="#" onclick="onpen_signin();" >&middot; sign in&raquo; &middot;</a></li>
+                <li><a id="aMenuMyAccount" class="btn-warning" style="color: white; visibility:hidden" href="#" onclick="onpen_myaccount();">my account</a></li>
+              </ul>             
+            </div><!--/.nav-collapse -->
+          </div><!-- /.navbar-inner -->
+        </div><!-- /.navbar -->
+      </div> <!-- /.container -->
+    </div><!-- /.navbar-wrapper -->
+
+
+
+    <!-- Carousel
+    ================================================== -->
+    <div id="myCarousel" class="carousel slide">
+      <div class="carousel-inner">
+        <div class="item active">
+          <img src="images/slide-01.jpg" alt="">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>everywere, everytime</h1>
+              <p class="lead">Free and open source click-to-call service to allow any person receiving your mails, visiting your website, reading your twitts, watching your Facebook/Google+ profile to call you on your mobile phone with a single click</p>
+              <a class="btn btn-large btn-secondary" onclick="onpen_signup();">sign up today &raquo;</a>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="images/slide-03.jpg" alt="">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>any browser</h1>
+              <p class="lead">Natively (plugin-less) works with any browser supporting <a target=_blank href="http://en.wikipedia.org/wiki/WebRTC">WebRTC</a> (<a target=_blank href="https://www.google.com/intl/en/chrome/browser/">Chrome</a>, <a target=_blank href="http://www.mozilla.org/en-US/firefox/aurora/">Firefox Aurora</a> and <a target=_blank href="http://nightly.mozilla.org/">Nightly</a>). Can also be used on other browsers (Safari, Opera and IE) - thanks to <a target=_blank href="https://code.google.com/p/webrtc4all/downloads/list">webrtc4all</a> plugin -</p>
+              <a class="btn btn-large btn-secondary" href="#" onclick="onpen_signin();">sign in &raquo;</a>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="images/slide-02.jpg" alt="">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>any SIP softphone</h1>
+              <p class="lead">Your website visitors can call you on your SIP softphone. <br />Tested with most well-konwn free softphones: <a target=_blank href="http://www.counterpath.com/x-lite.html">X-Lite</a>, <a target=_blank href="https://www.linphone.org/">Linphone</a>, <a target=_blank href="https://code.google.com/p/sipdroid/">SipDroid</a>, <a target=_blank href="http://en.wikipedia.org/wiki/Ekiga">Ekiga</a>, <a target=_blank href="http://icanblink.com/">Blink</a>, <a target=_blank href="http://www.csipsimple.com/">CSipSimple</a>, <a target=_blank href="https://jitsi.org/">Jitsi</a>... </p>
+              <p class="lead">It's also possible to receive calls on your mobile (GSM) or landline phone depending on your SIP provider.</p>
+              <a class="btn btn-large btn-secondary" target=_blank href="http://webrtc2sip.org">Learn more &raquo;</a>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="images/slide-03.jpg" alt="">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>any SIP network</h1>
+              <p class="lead">Works with <a target=_blank href="http://www.asterisk.org/">Asterisk</a>, <a target=_blank href="http://www.freeswitch.org/">FreeSWITCH</a>, <a target=_blank href="http://www.resiprocate.org/Main_Page"> reSIProcate</a> or any SIP-legacy network. No need to change your existing network. </p>
+              <a class="btn btn-large btn-secondary" target=_blank href="http://webrtc2sip.org">Learn more &raquo;</a>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="images/slide-01.jpg" alt="">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>any Provider</h1>
+              <p class="lead">Don't need to get a SIP address from us, yours will work.<br /> <a target=_blank href="https://www.ekiga.net/index.php?page=register">@ekiga.net</a>, <a target=_blank href="https://serweb.iptel.org/user/reg">@iptel.org</a>, <a target=_blank href="https://mdns.sipthor.net/register_sip_account.phtml">@sip2sip.info</a>...</p>
+              <p class="lead">After your account activation, you'll need to <a href="#" onclick="onpen_signin();"> sign in</a> to tell us what's your SIP address.</p>
+              <a target=_blank class="btn btn-large btn-secondary" href="https://mdns.sipthor.net/register_sip_account.phtml">Get Free SIP address  &raquo;</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+      <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
+    </div><!-- /.carousel -->
+
+    
+
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+    <div class="container marketing">
+
+      <!-- Three columns of text below the carousel -->
+      <div class="row">
+        <div class="span5">
+          <img class="img-circle h2" data-src="holder.js/80x80/social/text:1" />
+          <h2>sign up today</h2>
+          <p>We only need your email address. The process is secure and will take less than 5 minutes. We're not a commercial company and will never share your address. </p>
+          <p><a class="btn" href="#" onclick="onpen_signup();">let's go &raquo;</a></p>
+        </div><!-- /.span5 -->
+        <div class="span5">
+          <img class="img-circle" data-src="holder.js/80x80/social/text:2" />
+          <h2>get your link address</h2>
+          <p>   
+            As soon as you sign up we will send you an email to check your address validity. The email will contain your activation code and link address. <br />
+            The link address can be integrated in your social network profile (FaceBook, Twitter, reddit, G+), email signature, website... as soon as your account is activated.
+          </p>
+          <p><a class="btn" href="ug.htm#a2">view details &raquo;</a></p>
+        </div><!-- /.span5 -->
+        <div class="span5">
+          <img class="img-circle" data-src="holder.js/80x80/social/text:3" />
+          <h2>set your SIP address</h2>
+          <p>   
+            Tell us what's the SIP address where you want to receive calls from your website visitors. <br />
+            <a target=_blank href="https://code.google.com/p/sipml5/wiki/Public_SIP_Servers">Do you need a SIP address?</a>
+          </p>
+          <p><a class="btn" href="ug.htm#a3">view details &raquo;</a></p>
+        </div><!-- /.span5 -->
+        <div class="span5">
+          <img class="img-circle" data-src="holder.js/80x80/social/text:4" />
+          <h2>create a call button</h2>
+          <p>This step is optional and allows to have a nice "call us &raquo;" button on your website. You should use the <a href="ug.htm#a6">link address</a> received via mail if call feature is to be added on social network, public profile, email signature...</p>
+          <p><a class="btn" href="ug.htm#a5">view details &raquo;</a></p>
+        </div><!-- /.span5 -->
+      </div><!-- /.row -->
+
+
+      <!-- START THE FEATURETTES -->
+
+      <hr class="featurette-divider">
+
+      <div class="featurette">
+        <img class="featurette-image img-circle pull-right" data-src="holder.js/200x200/gray/text:A" />
+        <h2 class="featurette-heading">100% open source <span class="muted">and it's free.</span></h2>
+        <p class="lead">
+            The solution is based on our open source rock stars: <a target=_blank href="http://sipml5.org">sipML5</a> and <a target=_blank href="http://webrtc2sip.org">webrtc2sip</a>. <a target=_blank href="http://webrtc2sip.org">webrtc2sip</a> is a rock star already used by <b>100+ companies</b> all around the world. It's smart, powerful, fully featured and intuitive. <br />
+            No need to write a single line, all components are open source and ready for the prime: <b>sip proxy</b>, <b>media encoder</b>, <b>smtp client</b>, <b>database connector</b>, <b>account manager</b>...
+        </p>
+        <a class="btn btn-medium btn-secondary" target=_blank href="https://code.google.com/p/click-2-dial/source/checkout">source code &raquo;</a>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <div class="featurette">
+        <img class="featurette-image img-circle pull-left" data-src="holder.js/200x200/gray/text:B" />
+        <h2 class="featurette-heading">any browser, any softphone <span class="muted">and any SIP network.</span></h2>
+        <p class="lead">
+            It works on any modern browser supporting HTML5 and WebRTC. The server-side components contains modules to allow connecting to any SIP-legacy network or PSTN.
+        </p>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <div class="featurette">
+        <img class="featurette-image img-circle pull-right" data-src="holder.js/200x200/gray/text:C" />
+        <h2 class="featurette-heading">an issue? <span class="muted">share it!</span></h2>
+        <p class="lead">
+            All components (both client-side and server-side) used in this solution are developed by Doubango Telecom. We loved developing these products and are happy to share it with you for free. <br />
+            Today, our <a target=_blank href="https://groups.google.com/group/doubango">developer community</a> have more than <b>860+ participants</b> and they will be happy to help you fix your issues. Please also do not hesitate to check our <a target=_blank href="https://code.google.com/p/click-2-dial/issues/list">issue tracker</a>.
+        </p>
+        <a target=_blank class="btn btn-medium btn-secondary" href="https://code.google.com/p/click-2-dial/issues/list">issue tracker &raquo;</a>
+        <a target=_blank class="btn btn-medium btn-secondary" href="https://groups.google.com/group/doubango">developer group &raquo;</a>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <!-- /END THE FEATURETTES -->
+
+
+      <!-- FOOTER -->
+      <footer>
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>&copy; 2013 Doubango Telecom. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+        <p><i>Inspiring the future</i></p>
+      </footer>
+
+    </div><!-- /.container -->
+    
+    <!-- click-to-call widget -->
+    <script type='text/javascript' src='c2c-api.js'></script>
+    <script type="text/javascript">
+        c2c.from = 'ZGlvcG1hbWFkb3VAZG91YmFuZ28ub3Jn';
+        c2c.text = 'call us &raquo;';
+        c2c.cls = 'btn btn-large btn-success';
+        c2c.glass = true;
+        c2c.config = {
+            http_service_url: null,
+            websocket_proxy_url: null,
+            sip_outbound_proxy_url: null
+        };
+        c2c.init(); // add the "call us" button (not required)
+    </script>
+
+    <!-- Glass Panel -->
+    <div id='divGlassPanel' class='glass-panel' style='visibility:hidden'></div>
+    <!-- SignUp Div -->
+    <div id='divSignUp' class='span3 well div-sign-in-up' style="left:0px; top:0px; width:250; height:140; visibility:hidden">
+        <table style="width: 100%; height: 100%">
+            <tr><td><label id="lbSignUp" style="" align="center"></label></td></tr>
+            <tr><td><input type="text" style="width: 100%; height: 30px" id="txtSignUpName" value="" placeholder="Your friendly name here" /></td></tr>
+            <tr><td><input type="text" style="width: 100%; height: 30px" id="txtSignUpEmail" value="" placeholder="Your email address here" /></td></tr>
+            <tr><td align='right'><a class="btn btn-medium btn-primary" onclick="signup();">sign up</a> <a class="btn btn-medium btn-secondary" onclick="close_signup();">cancel</a></td></tr>
+        </table>
+    </div>
+    <!-- SignIn Div -->
+    <div id='divSignIn' class='span3 well div-sign-in-up' style="left:0px; top:0px; width:250; height:240; visibility:hidden">
+        <table style="width: 100%; height: 100%">
+            <tr><td><label id="lbSignIn" style="" align="center"></label></td></tr>
+            <tr><td><input type="text" style="width: 100%; height: 30px" id="txtSignInEmail" value="" placeholder="Your email address here" /></td></tr>
+            <tr><td><input type="password" style="width: 100%; height: 30px" id="txtSignInPassword" value="" placeholder="Your password here" /></td></tr>
+            <tr><td align='right'><a class="btn btn-medium btn-primary" onclick="signin();">sign in</a> <a class="btn btn-medium btn-secondary" onclick="close_signin();">cancel</a></td></tr>
+        </table>
+    </div>
+
+    <!-- ANALYTICS -->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-6868621-25']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./assets/js/jquery.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-transition.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-alert.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-modal.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-dropdown.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-scrollspy.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-tab.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-tooltip.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-popover.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-button.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-collapse.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-carousel.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-typeahead.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      !function ($) {
+        $(function(){
+          // carousel demo
+          $('#myCarousel').carousel()
+        })
+      }(window.jQuery)
+    </script>
+    <script src="./assets/js/holder/holder.js" type="text/javascript"></script>
+  </body>
+</html>
