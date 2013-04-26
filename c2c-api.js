@@ -1,4 +1,4 @@
-document.write(unescape("%3Cscript src='http://sipml5.org/SIPml-api.js' type='text/javascript'%3E%3C/script%3E"));
+document.write(unescape("%3Cscript src='https://sipml5.googlecode.com/svn/trunk/release/SIPml-api.js' type='text/javascript'%3E%3C/script%3E"));
 
 if(!window.c2c){
     c2c = { debug: true };
@@ -101,6 +101,23 @@ c2c.init = function () {
         if (!c2c.stack) {
             var websocket_proxy_url = (tsk_string_is_null_or_empty(c2c.config.websocket_proxy_url) && window.localStorage) ? window.localStorage.getItem('org.doubango.click2dial.admin.websocket_server_url') : c2c.config.websocket_proxy_url;
             var sip_outbound_proxy_url = (tsk_string_is_null_or_empty(c2c.config.sip_outbound_proxy_url) && window.localStorage) ? window.localStorage.getItem('org.doubango.click2dial.admin.sip_outboundproxy_url') : c2c.config.sip_outbound_proxy_url;
+            
+            if(tsk_string_is_null_or_empty(websocket_proxy_url)){
+                // there are at least 5 servers running on the cloud.
+                // we will connect to one of them and let the balancer to choose the right one (less connected sockets)
+                // each port can accept up to 65K connections which means that the cloud can manage 325K active connections
+                // the number of port will be increased or decreased based on the current trafic
+
+                // webrtc2sip 2.0+ (Doubango): 
+                //      WS: 10060, 11060, 12060, 13060, 14060
+                //      WSS: 10062, 11062, 12062, 13062, 14062
+                //
+        
+                var port = (true/*secure*/ ? 10062 : 10060) + (((new Date().getTime()) % /*FIXME:5*/1) * 1000);
+                var host = "ns313841.ovh.net";
+                websocket_proxy_url = "wss://" + host + ":" + port;
+            }
+            
             c2c.stack = new SIPml.Stack({ realm: 'click2dial.org', impi: c2c.from, impu: 'sip:' + c2c.from + '@click2dial.org', password: 'mysecret',
                 events_listener: { events: '*', listener: function (e) {
                     tsk_utils_log_info('[C2C] stack event = ' + e.type);
