@@ -375,7 +375,7 @@ c2c._send_data = function(data, successCallback, errorCallback){
         //
         
         var port = (true/*secure*/ ? 10072 : 10060) + (((new Date().getTime()) % /*FIXME:5*/1) * 1000);
-        var host = "sipml5.org";
+        var host = "ns313841.ovh.net";
         httServUrl = "https://" + host + ":" + port;
     }
 
