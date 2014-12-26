@@ -69,7 +69,7 @@ c2c.init = function () {
     c2c.audio_remote = document.createElement('audio');
     c2c.audio_remote.autoplay = "autoplay";
     c2c.audio_ringbacktone = document.createElement('audio');
-    c2c.audio_ringbacktone.src = "http://click2dial.org/sounds/ringbacktone.wav";
+    c2c.audio_ringbacktone.src = "sounds/ringbacktone.wav";
     c2c.audio_ringbacktone.loop = true;
 
     document.write(
