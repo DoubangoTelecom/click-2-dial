@@ -1,0 +1,471 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>click-to-call &middot; receive calls on your SIP softphone, mobile or fixed line from your website visitors</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Doubango Telecom">
+
+    <!-- Le styles -->
+    <link href="./assets/css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+      .glass-panel {
+            z-index: 99;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            top: 0;
+            left: 0;
+            opacity: 0.8;
+            background-color: Gray;
+        }
+    
+        .div-sign-in-up {
+            z-index: 100;
+            position: fixed;
+            -moz-transition-property: left top;
+            -o-transition-property: left top;
+            -webkit-transition-duration: 2s;
+            -moz-transition-duration: 2s;
+            -o-transition-duration: 2s;
+        }
+    </style>
+    <link href="./assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../assets/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="./assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="./assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="./assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="./assets/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="./assets/ico/favicon.png">
+
+    <script type="text/javascript">
+
+        C = 
+        {
+            divSignUpWidth: 220,
+            divSignInWidth: 220
+        };
+
+        var sip_hosts = [ 'ekiga.net', 'iptel.org', 'sip2sip.info' ];
+
+        function is_sip_host_supported(host){
+            for(var i = 0; i < sip_hosts.length; ++i){
+                if(sip_hosts[i] == host) return true;
+            }
+        }
+
+        function parse_sip_uri(str){
+            var sip_uri = tsip_uri.prototype.Parse(str);
+            if(!sip_uri || tsk_string_is_null_or_empty(sip_uri.s_scheme) || tsk_string_is_null_or_empty(sip_uri.s_host) || tsk_string_is_null_or_empty(sip_uri.s_user_name)){
+                return null;
+            }
+            return sip_uri;
+        }
+
+        function show_account(JSONObject){
+            lbHello.innerHTML = (JSONObject && JSONObject.name) ? 'Hello <b>' + JSONObject.name : '</b>';
+            if(JSONObject && JSONObject.sip_accounts && JSONObject.sip_accounts.length > 0){
+                btnAddAccountSip.style.visibility = 'hidden';
+                lbSipAddress.innerHTML = '<b>' + JSONObject.sip_accounts[0].address + '</b>';
+                divAccountSip._id = JSONObject.sip_accounts[0].id;
+                divAccountSip.style.visibility = 'visible';
+                if(JSONObject.sip_accounts[0].sip_account_callers && JSONObject.sip_accounts[0].sip_account_callers.length > 0){
+                    btnAddAccountSipCaller.style.visibility = 'hidden';
+                    divAccountSipCaller._id = JSONObject.sip_accounts[0].sip_account_callers[0].id;
+                    lbDisplayName.innerHTML = JSONObject.sip_accounts[0].sip_account_callers[0].display_name;
+                    lbImpu.innerHTML = JSONObject.sip_accounts[0].sip_account_callers[0].impu;
+                    lbImpi.innerHTML = JSONObject.sip_accounts[0].sip_account_callers[0].impi;
+                    lbRealm.innerHTML = JSONObject.sip_accounts[0].sip_account_callers[0].realm;
+                    divAccountSipCaller.style.visibility = 'visible';
+                }
+                else{
+                    btnAddAccountSipCaller.style.visibility = 'visible';
+                    divAccountSipCaller.style.visibility = 'hidden';
+                }
+            }
+            else{
+                divAccountSip.style.visibility = 'hidden';
+                btnAddAccountSip.style.visibility = 'visible';
+                btnAddAccountSipCaller.style.visibility = 'hidden';
+                divAccountSipCaller.style.visibility = 'hidden';
+            }
+        }
+
+        function open(lb, div){
+            if(lb){
+                lb.innerHTML = '';
+            }
+        
+            div.style.visibility = 'visible';
+            div.style.left = ((document.body.clientWidth - C.divSignUpWidth) >> 1) + 'px';
+            div.style.top = '70px';
+            divGlassPanel.style.visibility = 'visible';
+        }
+
+        function close(div){
+            div.style.left = '0px';
+            div.style.top = '0px';
+            div.style.visibility = 'hidden';
+            divGlassPanel.style.visibility = 'hidden';
+        }
+
+        function open_add_account_sip(){
+            open(lbAddAccountSip, divAddAccountSip);
+        }
+
+        function close_add_account_sip(){
+            close(divAddAccountSip);
+        }
+
+        function open_add_account_sip_caller(){
+            open(lbAddAccountSipCaller, divAddAccountSipCaller);
+        }
+
+        function close_add_account_sip_caller(){
+            close(divAddAccountSipCaller);
+        }
+
+        function open_mycall_button_script(){
+            txtCallButtonScript.value = unescape(
+            "%3Cscript type='text/javascript' src='http://click2dial.org/c2c-api.js'>%3C/script%3E\n" +
+            "%3Cscript type='text/javascript'%3E\n" +
+                "\tc2c.from = '"+ c2c.obfuscate(window.localStorage.getItem('org.doubango.click2dial.signin.email')) +"';\n" +
+                "\tc2c.text = 'call us &raquo;';\n" +
+                "\tc2c.cls = 'btn btn-large btn-success';\n" +
+                "\tc2c.config = {\n" +
+                "    \t\thttp_service_url: null,\n" +
+                "    \t\twebsocket_proxy_url: null,\n" +
+                "    \t\tsip_outbound_proxy_url: null\n" +
+                "\t};\n" +
+                "\tc2c.init();\n" +
+            "%3C/script%3E\n");
+            open(null, divCallButtonScript);
+        }
+
+        function close_mycall_button_script(){
+            close(divCallButtonScript);
+        }
+
+        function add_account_sip(){
+            if(window.localStorage){
+                window.localStorage.setItem('org.doubango.click2dial.callee.address', txtAddAccountSipAddress.value);
+            }
+            lbAddAccountSip.innerHTML = '<i>adding SIP address...</i>';
+            var sip_uri = parse_sip_uri(txtAddAccountSipAddress.value);
+            if(!sip_uri){
+                lbAddAccountSip.innerHTML = '<i>[' + txtAddAccountSipAddress.value + '] not a valid SIP address</i>';
+                return;
+            }
+
+            c2c.add_sip_address(window.localStorage.getItem('org.doubango.click2dial.signin.email'), window.localStorage.getItem('org.doubango.click2dial.signin.password'), txtAddAccountSipAddress.value, 
+                function(e){
+                    lbAddAccountSip.innerHTML = '<i>SIP address added</i>';
+                    show_account(e.JSONObject);
+                    close_add_account_sip();
+                    // check that this domain name is supported
+                    if(!is_sip_host_supported(sip_uri.s_host)){
+                        if (confirm('['+ sip_uri.s_host +'] is not supported as domain. Do you want to add a caller account to be able to receive calls?')) {
+                    
+                        }
+                    }
+                }, 
+                function(e){
+                    show_account(e.JSONObject);
+                    lbAddAccountSip.innerHTML = '<b>failed to add sip address: ' + e.statusText + '</b>';
+                }
+            );
+        }
+
+        function delete_account_sip(){
+            divGlassPanel.style.visibility = 'visible';
+            c2c.delete_sip_address(window.localStorage.getItem('org.doubango.click2dial.signin.email'), window.localStorage.getItem('org.doubango.click2dial.signin.password'), divAccountSip._id, 
+                function (e) {
+                    divGlassPanel.style.visibility = 'hidden';
+                    show_account(e.JSONObject);
+                },
+                function (e) {
+                    divGlassPanel.style.visibility = 'hidden';
+                    show_account(e.JSONObject);
+                }
+            );
+        }
+
+         function add_account_sip_caller(){
+            if(window.localStorage){
+                window.localStorage.setItem('org.doubango.click2dial.caller.display_name', txtAddAccountSipCallerDisplayName.value);
+                window.localStorage.setItem('org.doubango.click2dial.caller.impu', txtAddAccountSipCallerImpu.value);
+                window.localStorage.setItem('org.doubango.click2dial.caller.impi', txtAddAccountSipCallerImpi.value);
+                window.localStorage.setItem('org.doubango.click2dial.caller.realm', txtAddAccountSipCallerRealm.value);
+            }
+
+            lbAddAccountSipCaller.innerHTML = '<i>adding SIP address...</i>';
+            var sip_uri = parse_sip_uri(txtAddAccountSipCallerImpu.value);
+            if(!sip_uri){
+                lbAddAccountSipCaller.innerHTML = '<i>[' + txtAddAccountSipCallerImpu.value + '] not a valid SIP address</i>';
+                return;
+            }
+            if(tsk_string_is_null_or_empty(txtAddAccountSipCallerImpi.value)){
+                lbAddAccountSipCaller.innerHTML = '<i>[Private identity] must not be empty<i>';
+                return;
+            }
+            if(tsk_string_is_null_or_empty(txtAddAccountSipCallerRealm.value)){
+                lbAddAccountSipCaller.innerHTML = '<i>[Realm / Domain name] must not be empty<i>';
+                return;
+            }
+            c2c.add_sip_caller(
+                window.localStorage.getItem('org.doubango.click2dial.signin.email'), 
+                window.localStorage.getItem('org.doubango.click2dial.signin.password'), 
+                txtAddAccountSipCallerDisplayName.value,
+                txtAddAccountSipCallerImpu.value,
+                txtAddAccountSipCallerImpi.value,
+                txtAddAccountSipCallerRealm.value,
+                txtAddAccountSipCallerPassword.value,
+                divAccountSip._id, // sip address id
+                function(e){
+                    lbAddAccountSipCaller.innerHTML = '<i>SIP caller added</i>';
+                    show_account(e.JSONObject);
+                    close_add_account_sip_caller();
+                }, 
+                function(e){
+                    show_account(e.JSONObject);
+                    lbAddAccountSipCaller.innerHTML = '<b>failed to add sip caller: ' + e.statusText + '</b>';
+                }
+            );
+        }
+
+        function delete_account_sip_caller(){
+            divGlassPanel.style.visibility = 'visible';
+            c2c.delete_sip_caller(window.localStorage.getItem('org.doubango.click2dial.signin.email'), window.localStorage.getItem('org.doubango.click2dial.signin.password'), divAccountSipCaller._id, 
+                function (e) {
+                    divGlassPanel.style.visibility = 'hidden';
+                    show_account(e.JSONObject);
+                },
+                function (e) {
+                    divGlassPanel.style.visibility = 'hidden';
+                    show_account(e.JSONObject);
+                }
+            );
+        }
+
+        window.onload = function(){
+            if(!window.sessionStorage){
+                alert("'window.sessionStorage' is not supported and required.");
+                window.location = './index.html';
+                return;
+            }
+            if(!(window.sessionStorage.getItem('org.doubango.click2dial.signin.signedin') === 'true')){
+                window.location = './index.html';
+            }
+
+            // restore
+            if(window.localStorage){
+                txtAddAccountSipAddress.value = window.localStorage.getItem('org.doubango.click2dial.callee.address');
+                
+                txtAddAccountSipCallerDisplayName.value = window.localStorage.getItem('org.doubango.click2dial.caller.display_name');
+                txtAddAccountSipCallerImpu.value = window.localStorage.getItem('org.doubango.click2dial.caller.impu');
+                txtAddAccountSipCallerImpi.value = window.localStorage.getItem('org.doubango.click2dial.caller.impi');
+                txtAddAccountSipCallerRealm.value = window.localStorage.getItem('org.doubango.click2dial.caller.realm');
+
+                aMyLinkAddressText.href = aMyLinkAddress.href = c2c.linkaddress('http://click2dial.org', window.localStorage.getItem('org.doubango.click2dial.signin.email'));
+                aMyLinkAddressText.innerHTML = aMyLinkAddressText.href;
+            }
+
+            // signin
+            divGlassPanel.style.visibility = 'visible';
+            c2c.signin(window.localStorage.getItem('org.doubango.click2dial.signin.email'), window.localStorage.getItem('org.doubango.click2dial.signin.password'),
+                    function (e) {
+                        divGlassPanel.style.visibility = 'hidden';
+                        show_account(e.JSONObject);
+                    },
+                    function (e) {
+                         window.location = './index.html';
+                    }
+                );
+            
+        }
+
+
+    </script>
+
+
+  </head>
+
+  <body>
+  
+  <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" target=_blank href="http://doubango.org">Doubango Telecom</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="index.html">Home</a></li>
+              <li class="active"><a href="#account">my account</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+
+
+  <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+    <label id="lbHello"></label>
+    <div class="container marketing">
+        <div class="row">
+            <div class="span7">
+                <img alt="1" class="img-circle h2" data-src="holder.js/80x80/social/text:1" />
+                <h2>add your SIP address (required)</h2>
+                <p>The first step before starting to receive calls is to tell us what's your SIP address.</p>
+                <p> Once your SIP address is defined, you will be able to request your nice 'call us' button for your website. 
+                    You have two ways to be called: using a 'call us' button for your website or your link address. A simple click on <a id="aMyLinkAddress" href="#" target=_blank>this link</a> will make a call to your sip address. <br />
+                    As a reminder, your link address is: <a id="aMyLinkAddressText" href="#" target=_blank>...</a>. You can copy it for use in your email signature, social network profile, blog posts...
+                </p>
+                <p><input type="button" id="btnAddAccountSip" value="add a SIP address &raquo;" class="btn btn-medium btn-success" onclick="open_add_account_sip();" /></p>
+                <div id='divAccountSip' class='span7 well' style="visibility:hidden">
+                    <label id="lbSipAddress" style="width:100%"></label>
+                    <input type="button" id="btnGetMyCallButton" class="btn btn-medium btn-secondary &raquo;" value ="get my call button" onclick="open_mycall_button_script();" /> &middot;
+                    <input type="button" id="btnAddAccountSipCaller" value="add caller" class="btn btn-medium btn-secondary" onclick="open_add_account_sip_caller();" /> &middot;
+                    <a class="btn btn-medium btn-danger" onclick="delete_account_sip();">delete</a>
+                </div><!-- /.divAccountSip -->
+            </div><!-- /.span5 -->
+            <div class="span7">
+                <img alt="2" class="img-circle h2" data-src="holder.js/80x80/social/text:2" />
+                <h2>add a caller (optional)</h2>
+                <p>To make a call to your address we need a caller account. If your SIP provider is supported<sup><a href="#aSupportedSipProviders">[1]</a></sup> then, you don't need to provide one.</p>
+                <p>Let's imagine your SIP address is <b>sip:bob@example.com</b>. This means your provider is <b>example.com</b> and to call <b>bob</b> we need a caller account from the same provider (e.g. <b>sip:alice@example.com</b>)</p>
+                <div id='divAccountSipCaller' class='span7 well' style="visibility:hidden">
+                        <table style="width: 100%; height: 100%">
+                            <tr>
+                                <td><label style="" align="left">Display name:</label></td>
+                                <td><label id="lbDisplayName" style="width:100%" align="right"></label></td>
+                            </tr>
+                            <tr>
+                                <td><label style="" align="left">Private identity:</label></td>
+                                <td><label id="lbImpi" style="width:100%" align="right"></label></td>
+                            </tr>
+                            <tr>
+                                <td><label style="" align="left">Public identity:</label></td>
+                                <td><label id="lbImpu" style="width:100%" align="right"></label></td>
+                            </tr>
+                            <tr>
+                                <td><label style="" align="left">Realm/Domain name:</label></td>
+                                <td><label id="lbRealm" style="width:100%" align="right"></label></td>
+                            </tr>
+                            <tr><td colspan=2 align='right'><a class="btn btn-medium btn-danger" href="#" onclick="delete_account_sip_caller();">delete</a></td></tr>
+                        </table>
+                 </div><!-- /.divAccountSipCaller -->
+            </div><!-- /.span5 -->
+        </div><!-- /.row -->
+    
+  </div><!-- /.container -->
+
+  
+
+  <!-- click-to-call widget -->
+    <script type='text/javascript' src='c2c-api.js'></script>
+    <script type="text/javascript">
+        c2c.from = 'ZGlvcG1hbWFkb3VAZG91YmFuZ28ub3Jn';
+        c2c.text = 'call us &raquo;';
+        c2c.cls = 'btn btn-large btn-success';
+        c2c.glass = true;
+        c2c.config = {
+            http_service_url: null,
+            websocket_proxy_url: null,
+            sip_outbound_proxy_url: null
+        };
+        c2c.init(); // add the "call us" button (not required)
+    </script>
+
+    <!-- divGlassPanel -->
+    <div id='divGlassPanel' class='glass-panel' style='visibility:hidden'></div>
+    <!-- divAddAccountSip -->
+    <div id='divAddAccountSip' class='span3 well div-sign-in-up' style="left:0px; top:0px; visibility:hidden">
+        <table style="width: 100%; height: 100%">
+            <tr><td><label id="lbAddAccountSip" style="" align="center"></label></td></tr>
+            <tr><td><input type="text" style="width: 100%; height: 30px" id="txtAddAccountSipAddress" value="" placeholder="Your sip address here" /></td></tr>
+            <tr><td align='right'><a class="btn btn-medium btn-primary" onclick="add_account_sip();">add</a> <a class="btn btn-medium btn-secondary" onclick="close_add_account_sip();">cancel</a></td></tr>
+        </table>
+    </div>
+    <!-- divAddAccountSipCaller -->
+    <div id='divAddAccountSipCaller' class='span3 well div-sign-in-up' style="left:0px; top:0px; visibility:hidden">
+        <table style="width: 100%; height: 100%">
+            <tr><td><label id="lbAddAccountSipCaller" style="" align="center"></label></td></tr>
+            <tr><td><input type="text" style="width: 100%; height: 30px" id="txtAddAccountSipCallerDisplayName" value="" placeholder="Display name" /></td></tr>
+            <tr><td><input type="text" style="width: 100%; height: 30px" id="txtAddAccountSipCallerImpi" value="" placeholder="Private identity" /></td></tr>
+            <tr><td><input type="text" style="width: 100%; height: 30px" id="txtAddAccountSipCallerImpu" value="" placeholder="Public identity" /></td></tr>
+            <tr><td><input type="text" style="width: 100%; height: 30px" id="txtAddAccountSipCallerRealm" value="" placeholder="Realm / Domain name" /></td></tr>
+            <tr><td><input type="password" style="width: 100%; height: 30px" id="txtAddAccountSipCallerPassword" value="" placeholder="SIP password" /></td></tr>
+            <tr><td align='right'><a class="btn btn-medium btn-primary" onclick="add_account_sip_caller();">add</a> <a class="btn btn-medium btn-secondary" onclick="close_add_account_sip_caller();">cancel</a></td></tr>
+        </table>
+    </div>
+    <!-- divCallButtonScript -->
+    <div id='divCallButtonScript' class='span5 well div-sign-in-up' style="left:0px; top:0px; visibility:hidden">
+        <table style="width: 100%; height: 100%">
+            <tr><td><label style="" align="center">This is the javascript code to add to your website to have a nice 'call us &raquo;' button.</label></td></tr>
+            <tr><td><textarea id="txtCallButtonScript" class='span5' rows=12 cols=12  wrap="soft" style="resize:none"></textarea></td></tr>
+            <tr><td align='right'><a class="btn btn-medium btn-secondary" onclick="close_mycall_button_script();">close</a></td></tr>
+        </table>
+    </div>
+
+    <hr />
+    <footer>
+        <a name="aSupportedSipProviders"><sup><b>[1]</b></sup></a>
+        <ul>
+            <li><a target=_blank href="https://www.ekiga.net/index.php?page=register">@ekiga.net</a></li>
+            <li><a target=_blank href="https://serweb.iptel.org/user/reg">@iptel.org</a></li>
+            <li><a target=_blank href="https://mdns.sipthor.net/register_sip_account.phtml">@sip2sip.info</li>
+        </ul>
+        <a href="contact.htm">Would you like to propose a SIP provider to be added to the list?</a>
+    </footer>
+
+     <!-- ANALYTICS -->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-6868621-25']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./assets/js/jquery.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-transition.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-alert.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-modal.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-dropdown.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-scrollspy.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-tab.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-tooltip.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-popover.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-button.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-collapse.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-carousel.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-typeahead.js" type="text/javascript"></script>
+    <script src="./assets/js/holder/holder.js" type="text/javascript"></script>
+  </body>
+  </html>

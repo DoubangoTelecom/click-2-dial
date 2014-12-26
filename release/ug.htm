@@ -1,0 +1,188 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>click-to-call &middot; receive calls on your SIP softphone, mobile or fixed line from your website visitors</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Doubango Telecom">
+
+    <!-- Le styles -->
+    <link href="./assets/css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="./assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../assets/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="./assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="./assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="./assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="./assets/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="./assets/ico/favicon.png">
+
+    <script type="text/javascript">
+        window.onload = function(){
+            
+        }
+    </script>
+
+
+  </head>
+
+  <body>
+  
+  <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" target=_blank href="http://doubango.org">Doubango Telecom</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="index.html">Home</a></li>
+              <li class="active"><a href="#ug">User Guide</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+
+
+  <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+    <div class="container marketing">
+        <p>
+            This is a short step-by-step user guide to explain how to start using our service.
+        </p>
+
+        <div class="span7">
+            <a name="a1"><img alt="1" class="img-circle h2" data-src="holder.js/50x50/social/text:1" /></a>
+            <h3>sign up</h3>
+            <p>
+                From the <a href="index.html">home page</a>, on the navigation bar, click on <i>sign up</i> and enter your email address.
+                Once your email address is validated (take less than 1 minute), you will receive a mail with your password, activation code and link address.
+                Anyone opening your link address on his browser will make a call to your SIP address.
+            </p>
+            <p>
+                Please note that the activation code is only valid for 48 hours.
+            </p>
+        </div><!-- /.span7 -->
+        <div class="span7">
+            <a name="a2"><img alt="2" class="img-circle h2" data-src="holder.js/50x50/social/text:2" /></a>
+            <h3>activate your account</h3>
+            <p>
+                Activating your account is as simple as opening the link received via mail.
+                At this step it's still not possible to receive calls as we still don't know what's your SIP address.
+            </p>
+        </div><!-- /.span7 -->
+        <div class="span7">
+            <a name="a3"><img alt="3" class="img-circle h2" data-src="holder.js/50x50/social/text:3" /></a>
+            <h3>sign in and tells us what's your SIP address</h3>
+            <p>
+                From the <a href="index.html">home page</a>, on the navigation bar, click on <i>sign in</i> and enter your email address and password (received via mail). <br />
+                Once you're signed in, a <a href="account.htm">my account</a> link will appear on the navigation bar. Open the <a href="account.htm">my account</a> link and tell us what's your SIP address.<br />
+                If your SIP address is not from a supported provider then, you'll be asked to add a <i>SIP caller</i>, orthewise (provider supported), <b>you are ready to receive calls</b>.
+            </p>
+        </div><!-- /.span7 -->
+        <div class="span7">
+            <a name="a4"><img alt="4" class="img-circle h2" data-src="holder.js/50x50/social/text:4" /></a>
+            <h3>add a SIP caller (optional)</h3>
+            <p>
+                This step is only required if you're using a not supported SIP provider. The SIP caller is required in this case for the simple reason that in order to make a call to your SIP address we need a caller with valid credentials.
+                To add a caller, just open <a href="account.htm">my account</a> page (requires to sign in). <br />
+                Please note that the caller password will never leave your browser: we only store the <b>MD5(username:realm:password)</b> hash in our database. All interactions with the SIP server (Secure WebSocket) and click-to-call service (Https) are secured.
+            </p>
+            Today we support:
+            <ul>
+                <li><a target=_blank href="https://www.ekiga.net/index.php?page=register">@ekiga.net</a></li>
+                <li><a target=_blank href="https://serweb.iptel.org/user/reg">@iptel.org</a></li>
+                <li><a target=_blank href="https://mdns.sipthor.net/register_sip_account.phtml">@sip2sip.info</a></li>
+            </ul>
+            If you know other free SIP providers please <a href="contact.htm">tell us</a> and we will add them. This will avoid for other users to be required to add a caller. <br />
+            For developers, it's possible to change the <a href="admin.htm">server configuration</a> to use your own SIP network.
+        </div><!-- /.span7 -->
+        <div class="span7">
+            <a name="a5"><img alt="5" class="img-circle h2" data-src="holder.js/50x50/social/text:5" /></a>
+            <h3>create a <i>call us &raquo;</i> button (optional)</h3>
+            <p>
+                This step is optional. A <i>call us</i> button is something like what you have on this page at the right side (only appears if your browser supports WebRTC).
+                To have such nice button on your website, you can request it from <a href="account.htm">my account</a> page.
+            </p>
+        </div><!-- /.span7 -->
+        <div class="span7">
+            <a name="a6"><img alt="6" class="img-circle h2" data-src="holder.js/50x50/social/text:6" /></a>
+            <h3>receiving calls</h3>
+            <p>
+                There are two ways for your visitors to call you: using your <b>link address</b> or <b>call us &raquo;</b> button.
+                For example, our link address is <a target=_blank href="http://click2dial.org/u/ZGlvcG1hbWFkb3VAZG91YmFuZ28ub3Jn">http://click2dial.org/u/ZGlvcG1hbWFkb3VAZG91YmFuZ28ub3Jn</a> and you can <a target=_blank href="http://click2dial.org/u/ZGlvcG1hbWFkb3VAZG91YmFuZ28ub3Jn">click here</a> to call us.
+            </p>
+        </div><!-- /.span7 -->
+  </div><!-- /.container -->  
+
+    <hr />
+    <footer>
+        <p>
+            &copy; Doubango Telecom 2013</p>
+        <i>Inspiring the future</i>
+    </footer>
+
+    <!-- click-to-call widget -->
+    <script type='text/javascript' src='c2c-api.js'></script>
+    <script type="text/javascript">
+        c2c.from = 'ZGlvcG1hbWFkb3VAZG91YmFuZ28ub3Jn';
+        c2c.text = 'call us &raquo;';
+        c2c.cls = 'btn btn-large btn-success';
+        c2c.glass = true;
+        c2c.config = {
+            http_service_url: null,
+            websocket_proxy_url: null,
+            sip_outbound_proxy_url: null
+        };
+        c2c.init(); // add the "call us" button (not required)
+    </script>
+
+     <!-- ANALYTICS -->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-6868621-25']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./assets/js/jquery.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-transition.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-alert.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-modal.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-dropdown.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-scrollspy.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-tab.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-tooltip.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-popover.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-button.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-collapse.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-carousel.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap-typeahead.js" type="text/javascript"></script>
+    <script src="./assets/js/holder/holder.js" type="text/javascript"></script>
+  </body>
+  </html>

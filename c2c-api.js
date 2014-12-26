@@ -27,16 +27,16 @@ c2c.add_html_elts = function(parent, elements) {
 if(c2c.debug){
     c2c.add_html_elts('head',
         [
-            { type: 'script', attributes: [{ name: 'type', value: 'text/javascript' }, { name: 'src', value: './c2c-base64.js' }] },
-            { type: 'script', attributes: [{ name: 'type', value: 'text/javascript' }, { name: 'src', value: './c2c-md5.js' }] }
+            { type: 'script', attributes: [{ name: 'type', value: 'text/javascript' }, { name: 'src', value: 'c2c-base64.js' }] },
+            { type: 'script', attributes: [{ name: 'type', value: 'text/javascript' }, { name: 'src', value: 'c2c-md5.js' }] }
         ]
     );
 }
 else{ // release
 c2c.add_html_elts('body',
         [
-            { type: 'link', attributes: [{ name: 'href', value: 'http://click2dial.org/assets/css/bootstrap.css' }, { name: 'rel', value: 'stylesheet' }] },
-            { type: 'link', attributes: [{ name: 'href', value: 'http://click2dial.org/assets/css/bootstrap-responsive.css' }, { name: 'rel', value: 'stylesheet' }] }
+            { type: 'link', attributes: [{ name: 'href', value: 'assets/css/bootstrap.css' }, { name: 'rel', value: 'stylesheet' }] },
+            { type: 'link', attributes: [{ name: 'href', value: 'assets/css/bootstrap-responsive.css' }, { name: 'rel', value: 'stylesheet' }] }
         ]
     );
 }
@@ -336,7 +336,13 @@ c2c.call = function(from){
                         c2c.callSession = null;
                         c2c.audio_ringbacktone.pause();
                         c2c.div_glass.style.visibility = 'hidden';
-                        window.setTimeout(function(){ c2c.button_call.innerHTML = c2c.button_call._innerHTML; }, 2000);
+                        window.setTimeout(function() {
+                            c2c.button_call.innerHTML = c2c.button_call._innerHTML;
+                                if (c2c.started && !c2c.callSession) {
+                                    c2c.stack.stop(); // disconnect the socket
+                                }
+                            }, 
+                            2000);
                     }
                     break;
                 }
