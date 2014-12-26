@@ -1,12 +1,12 @@
 #!/bin/bash
 
 #
-# Copyright (C) 2013 Doubango Telecom <http://www.doubango.org>
+# Copyright (C) 2013-2015 Doubango Telecom <http://www.doubango.org>
 # License: GPLv3
 # This file is part of Open Source click-to-call service <http://www.click2dial.org>
 #
 
-API_VERSION=1.0.1
+API_VERSION=1.0.2
 API_FOLDER_NAME=release
 API_FILE_NAME=c2c-api.js
 API_FILE_PATH=$API_FOLDER_NAME/$API_FILE_NAME
