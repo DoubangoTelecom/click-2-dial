@@ -289,13 +289,16 @@
     <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
     <link rel="shortcut icon" href="assets/ico/favicon.png">
 
+    <!-- https://www.google.com/recaptcha/admin#site/319418648?setup -->
+   <script src="https://www.google.com/recaptcha/api.js?onload=loadCaptcha&render=explicit" async defer></script>
 
     <script type="text/javascript">
         var bSignUpVisible, bSignInVisible, bSignedIn;
+        var recaptchaWidgetId = -1, g_recaptcha_response;
 
         C = 
         {
-            divSignUpWidth: 220,
+            divSignUpWidth: 250,
             divSignInWidth: 220
         };
 
@@ -303,7 +306,28 @@
             return /^([\w!.%+\-])+@([\w\-])+(?:\.[\w\-]+)+$/.test(a);
         }
 
-        function onpen_signup(){
+        function load_captcha() {
+            if (recaptchaWidgetId == -1) {
+                recaptchaWidgetId = grecaptcha.render('captcha_container', {
+                    'sitekey': '6LcY8QkTAAAAAJWjjsC7X-v7Jbv3zXnGB0kb88Lq',
+                    'callback': function(response) {
+                        tsk_utils_log_info('[C2C] reCAPTCHA got response!!');
+                        g_recaptcha_response = response;
+                        if (window.localStorage) {
+                            window.localStorage.setItem('org.doubango.click2dial.g-recaptcha-response', g_recaptcha_response);
+                        }
+                        btnSignUpSend.style.visibility = (g_recaptcha_response && g_recaptcha_response !== "") ? "visible" : "hidden";
+                    }
+                });
+            }
+        };
+        function get_captcha_response() {
+            if (g_recaptcha_response && g_recaptcha_response !== "") return g_recaptcha_response;
+            // if (window.localStorage) return window.localStorage.getItem('org.doubango.click2dial.g-recaptcha-response');
+        }
+
+        function onpen_signup() {
+            load_captcha();
             lbSignUp.innerHTML = '';
             if(window.localStorage){
                 txtSignUpEmail.value = window.localStorage.getItem('org.doubango.click2dial.signup.email');
@@ -313,6 +337,9 @@
             divSignUp.style.left = ((document.body.clientWidth - C.divSignUpWidth) >> 1) + 'px';
             divSignUp.style.top = '70px';
             divGlassPanel.style.visibility = 'visible';
+            
+            var captcha = get_captcha_response();
+            btnSignUpSend.style.visibility = (captcha && captcha !== "") ? "visible" : "hidden";
         }
 
         function onpen_signin(){
@@ -332,11 +359,12 @@
            }
         }
 
-        function close_signup(){
+        function close_signup() {        
             divSignUp.style.left = '0px';
             divSignUp.style.top = '0px';
             divSignUp.style.visibility = 'hidden';
             divGlassPanel.style.visibility = 'hidden';
+            btnSignUpSend.style.visibility = 'hidden';
         }
 
         function close_signin(){
@@ -346,7 +374,7 @@
             divGlassPanel.style.visibility = 'hidden';
         }
 
-        function signup(){
+        function signup() {
             if(!is_email(txtSignUpEmail.value)){
                 lbSignUp.innerHTML = '<i><b>['+txtSignUpEmail.value+'] not valid as email<i>';
                 return;
@@ -369,7 +397,8 @@
                 },
                 function(e){
                     lbSignUp.innerHTML = '<b>failed to sign up: ' + e.statusText + '</b>';
-                }
+                },
+                get_captcha_response(), 'reCAPTCHA'
             );
         }
 
@@ -696,12 +725,13 @@
     <!-- Glass Panel -->
     <div id='divGlassPanel' class='glass-panel' style='visibility:hidden'></div>
     <!-- SignUp Div -->
-    <div id='divSignUp' class='span3 well div-sign-in-up' style="left:0px; top:0px; width:250; height:140; visibility:hidden">
+    <div id='divSignUp' class='well div-sign-in-up' style="left:0px; top:0px; width:250; height:140; visibility:hidden">
         <table style="width: 100%; height: 100%">
             <tr><td><label id="lbSignUp" style="" align="center"></label></td></tr>
             <tr><td><input type="text" style="width: 100%; height: 30px" id="txtSignUpName" value="" placeholder="Your friendly name here" /></td></tr>
             <tr><td><input type="text" style="width: 100%; height: 30px" id="txtSignUpEmail" value="" placeholder="Your email address here" /></td></tr>
-            <tr><td align='right'><a class="btn btn-medium btn-primary" onclick="signup();">sign up</a> <a class="btn btn-medium btn-secondary" onclick="close_signup();">cancel</a></td></tr>
+            <tr><td><div id="captcha_container" style="width: 100%"></div></td></tr>
+            <tr><td align='right'><a id="btnSignUpSend" class="btn btn-medium btn-primary" visible="false" onclick="signup();">sign up</a> <a id="btnSignUpCancel" class="btn btn-medium btn-secondary" onclick="close_signup();">cancel</a></td></tr>
         </table>
     </div>
     <!-- SignIn Div -->
@@ -713,7 +743,7 @@
             <tr><td align='right'><a class="btn btn-medium btn-primary" onclick="signin();">sign in</a> <a class="btn btn-medium btn-secondary" onclick="close_signin();">cancel</a></td></tr>
         </table>
     </div>
-
+   
     <!-- ANALYTICS -->
     <script type="text/javascript">
       var _gaq = _gaq || [];
