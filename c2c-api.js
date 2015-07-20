@@ -182,13 +182,15 @@ c2c.init = function () {
             );
 }
 
-c2c.signup = function (name, email, successCallback, errorCallback) {
+c2c.signup = function(name, email, successCallback, errorCallback, captchaValue, captchaType) {
     var JSONText = JSON.stringify
         (
                {
                    action: 'req_account_add',
                    name: name,
-                   email: email
+                   email: email,
+                   captcha_value: captchaValue,
+                   captcha_type: captchaType
                }
         );
     return c2c._send_data(JSONText, successCallback, errorCallback);
@@ -389,8 +391,8 @@ c2c._send_data = function(data, successCallback, errorCallback){
         var JSONObject;
         try{
             if (this.readyState == this.DONE) {
-                if (this.status == 200){
-                    if(this.responseText != null){
+                if (this.status > 199 && this.status < 300) {
+                    if (this.responseText && this.responseText !== "") {
                         tsk_utils_log_info('[C2C] RECV: ' + this.responseText);
                         JSONObject = JSON.parse(this.responseText);
                     }
