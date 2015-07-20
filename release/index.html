@@ -290,7 +290,7 @@
     <link rel="shortcut icon" href="assets/ico/favicon.png">
 
     <!-- https://www.google.com/recaptcha/admin#site/319418648?setup -->
-   <script src="https://www.google.com/recaptcha/api.js?onload=loadCaptcha&render=explicit" async defer></script>
+   <script src="https://www.google.com/recaptcha/api.js?onload=captchaLoaded&render=explicit" async defer></script>
 
     <script type="text/javascript">
         var bSignUpVisible, bSignInVisible, bSignedIn;
@@ -365,6 +365,12 @@
             divSignUp.style.visibility = 'hidden';
             divGlassPanel.style.visibility = 'hidden';
             btnSignUpSend.style.visibility = 'hidden';
+
+            if (recaptchaWidgetId != -1) {
+                grecaptcha.reset(recaptchaWidgetId);
+                recaptchaWidgetId = -1;
+                document.getElementById('captcha_container').innerHTML = "";
+            }
         }
 
         function close_signin(){
