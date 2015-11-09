@@ -1,4 +1,4 @@
-document.write(unescape("%3Cscript src='https://sipml5.googlecode.com/svn/trunk/release/SIPml-api.js' type='text/javascript'%3E%3C/script%3E"));
+document.write(unescape("%3Cscript src='https://cdn.rawgit.com/DoubangoTelecom/sipml5/master/release/SIPml-api.js' type='text/javascript'%3E%3C/script%3E"));
 
 if(!window.c2c){
     c2c = { debug: true };

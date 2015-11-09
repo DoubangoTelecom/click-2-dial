@@ -6,7 +6,7 @@
 # This file is part of Open Source click-to-call service <http://www.click2dial.org>
 #
 
-API_VERSION=1.1.0
+API_VERSION=2.0.0
 API_FOLDER_NAME=release
 API_FILE_NAME=c2c-api.js
 API_FILE_PATH=$API_FOLDER_NAME/$API_FILE_NAME
